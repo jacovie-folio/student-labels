@@ -5,4 +5,5 @@ export interface Student {
   grade: string;
   first: string;
   last: string;
+  numCopies: number;
 }
