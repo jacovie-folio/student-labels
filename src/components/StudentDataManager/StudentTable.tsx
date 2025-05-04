@@ -1,0 +1,62 @@
+import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
+import React from 'react';
+import { useStudents } from '../../hooks/useStudents';
+import { Student } from '../../types/Student';
+
+const StudentTable: React.FC = () => {
+  const { students, onLoadStudents, onChangeSelectedStudentIds } =
+    useStudents();
+
+  const columns: GridColDef[] = [
+    {
+      field: 'numCopies',
+      headerName: 'x',
+      width: 40,
+      minWidth: 40,
+      editable: true,
+      type: 'number',
+    },
+    { field: 'first', headerName: 'First Name', flex: 1 },
+    { field: 'last', headerName: 'Last Name', flex: 1 },
+    { field: 'homeroom', headerName: 'Homeroom', flex: 1 },
+    { field: 'grade', headerName: 'Grade' },
+  ];
+
+  return (
+    <DataGrid
+      rows={students}
+      columns={columns}
+      checkboxSelection
+      disableRowSelectionOnClick
+      onRowSelectionModelChange={(selection: GridRowSelectionModel) =>
+        onChangeSelectedStudentIds([...selection.ids].map((id) => `${id}`))
+      }
+      processRowUpdate={(newRow: Student) => {
+        onLoadStudents((students) =>
+          students.map((student) =>
+            student.id === newRow.id
+              ? { ...student, numCopies: newRow.numCopies }
+              : student
+          )
+        );
+        return newRow;
+      }}
+      // onCellEditStop={(params, event) => {
+      //   console.log(params);
+      //   console.log(event);
+      //   if (params.colDef.field === 'numCopies') {
+      //     onLoadStudents((priorStudents) =>
+      //       priorStudents.map((student) =>
+      //         student.id === params.value.id
+      //           ? { ...student, numCopies: parseInt(params.value.numCopies) }
+      //           : student
+      //       )
+      //     );
+      //   }
+      // }}
+      sx={{ width: '100%', maxHeight: '80vh' }}
+    />
+  );
+};
+
+export default StudentTable;
