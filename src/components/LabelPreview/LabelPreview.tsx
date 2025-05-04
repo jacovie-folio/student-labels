@@ -71,8 +71,8 @@ const LabelPreview: React.FC = () => {
                     <Typography
                       variant="body1"
                       fontWeight={'bold'}
-                      fontSize={18}
-                      lineHeight={1.2}
+                      fontSize={`1.7vh`}
+                      lineHeight={`2.0vh`}
                       sx={{ fontFamily: ['Bubblegum Sans'] }}
                     >
                       {student.first}
