@@ -1,10 +1,14 @@
 import { Input } from '@mui/material';
 import Papa from 'papaparse';
 import React from 'react';
+import { STUDENT_CACHE_KEY } from '../../const';
 import { Student } from '../../types/Student';
 
 type Props = {
-  onDataLoaded: (data: Student[]) => void;
+  onDataLoaded: (data: {
+    students: Student[];
+    loadedFromCache: boolean;
+  }) => void;
 };
 
 const CSVUploader: React.FC<Props> = ({ onDataLoaded }) => {
@@ -26,7 +30,8 @@ const CSVUploader: React.FC<Props> = ({ onDataLoaded }) => {
           first: d.first.trim(),
           numCopies: 1,
         }));
-        onDataLoaded(parsed);
+        localStorage.setItem(STUDENT_CACHE_KEY, JSON.stringify(parsed));
+        onDataLoaded({ students: parsed, loadedFromCache: false });
       },
     });
   };

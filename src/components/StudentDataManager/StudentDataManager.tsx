@@ -1,10 +1,11 @@
-import { Stack } from '@mui/material';
+import WarningIcon from '@mui/icons-material/Warning';
+import { Chip, Stack } from '@mui/material';
 import { useStudents } from '../../hooks/useStudents';
 import CSVUploader from './CSVUploader';
 import StudentTable from './StudentTable';
 
 export const StudentDataManager = () => {
-  const { onLoadStudents } = useStudents();
+  const { loadedFromCache, onLoadStudents } = useStudents();
   return (
     <Stack
       spacing={2}
@@ -12,7 +13,16 @@ export const StudentDataManager = () => {
       alignItems={'flex-start'}
       justifyContent={'flex-start'}
     >
-      <CSVUploader onDataLoaded={onLoadStudents} />
+      <Stack spacing={2} direction={'row'}>
+        <CSVUploader onDataLoaded={onLoadStudents} />
+        {loadedFromCache && (
+          <Chip
+            icon={<WarningIcon />}
+            color="warning"
+            label="Using last upload"
+          />
+        )}
+      </Stack>
       <StudentTable />
     </Stack>
   );

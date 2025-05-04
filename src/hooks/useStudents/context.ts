@@ -5,13 +5,21 @@ const nullFunc = () => null;
 
 export const StudentContext = React.createContext<{
   students: Student[];
-  onLoadStudents: React.Dispatch<React.SetStateAction<Student[]>>;
+  loadedFromCache: boolean;
+  onLoadStudents: React.Dispatch<
+    React.SetStateAction<{ students: Student[]; loadedFromCache: boolean }>
+  >;
+  onUpdateStudents: (
+    studentUpdateFn: (priorStudents: Student[]) => Student[]
+  ) => void;
 
   selectedStudentIds: string[];
   onChangeSelectedStudentIds: (ids: string[]) => void;
 }>({
   students: [],
+  loadedFromCache: false,
   onLoadStudents: nullFunc,
+  onUpdateStudents: nullFunc,
 
   selectedStudentIds: [],
   onChangeSelectedStudentIds: nullFunc,

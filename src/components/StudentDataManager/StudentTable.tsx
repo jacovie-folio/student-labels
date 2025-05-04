@@ -4,22 +4,44 @@ import { useStudents } from '../../hooks/useStudents';
 import { Student } from '../../types/Student';
 
 const StudentTable: React.FC = () => {
-  const { students, onLoadStudents, onChangeSelectedStudentIds } =
+  const { students, onUpdateStudents, onChangeSelectedStudentIds } =
     useStudents();
 
   const columns: GridColDef[] = [
     {
       field: 'numCopies',
-      headerName: 'x',
-      width: 40,
-      minWidth: 40,
+      headerName: 'Copies',
+      width: 100,
       editable: true,
       type: 'number',
     },
     { field: 'first', headerName: 'First Name', flex: 1 },
     { field: 'last', headerName: 'Last Name', flex: 1 },
-    { field: 'homeroom', headerName: 'Homeroom', flex: 1 },
-    { field: 'grade', headerName: 'Grade' },
+    {
+      field: 'homeroom',
+      headerName: 'Homeroom',
+      flex: 1,
+      type: 'singleSelect',
+      valueOptions: students.reduce(
+        (part, next) => [
+          ...part,
+          ...(part.includes(next.homeroom) ? [] : [next.homeroom]),
+        ],
+        [] as string[]
+      ),
+    },
+    {
+      field: 'grade',
+      headerName: 'Grade',
+      type: 'singleSelect',
+      valueOptions: students.reduce(
+        (part, next) => [
+          ...part,
+          ...(part.includes(next.grade) ? [] : [next.grade]),
+        ],
+        [] as string[]
+      ),
+    },
   ];
 
   return (
@@ -32,7 +54,7 @@ const StudentTable: React.FC = () => {
         onChangeSelectedStudentIds([...selection.ids].map((id) => `${id}`))
       }
       processRowUpdate={(newRow: Student) => {
-        onLoadStudents((students) =>
+        onUpdateStudents((students) =>
           students.map((student) =>
             student.id === newRow.id
               ? { ...student, numCopies: newRow.numCopies }
