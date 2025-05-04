@@ -45,9 +45,9 @@ const LabelPreview: React.FC = () => {
 
   const selectedStudents: Array<Student | null> = [
     ...repeat(null, gap),
-    ...students
-      .filter((student) => selectedStudentIds.includes(student.id))
-      .flatMap((student) => repeat(student, student.numCopies)),
+    ...selectedStudentIds
+      .map((id) => students.find((student) => student.id === id) || null)
+      .flatMap((student) => repeat(student, student!.numCopies)),
   ];
 
   const totalPages = Math.ceil(selectedStudents.length / PAGE_SIZE);

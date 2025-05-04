@@ -12,7 +12,12 @@ export const StudentsProvider: React.FC<{ children: React.ReactNode }> = ({
   }>(() => {
     const cache = localStorage.getItem(STUDENT_CACHE_KEY);
     if (cache) {
-      return { students: JSON.parse(cache), loadedFromCache: true };
+      return {
+        students: (JSON.parse(cache) as Student[]).sort((a, b) =>
+          a.first < b.first ? -1 : a.first > b.first ? 1 : 0
+        ),
+        loadedFromCache: true,
+      };
     }
 
     return { students: [], loadedFromCache: false };
