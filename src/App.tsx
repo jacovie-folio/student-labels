@@ -42,10 +42,10 @@ const App: React.FC = () => {
             flexGrow={1}
             sx={{ width: '100vw', pt: '5vh' }}
           >
-            <Grid size={5}>
+            <Grid size={6}>
               <StudentDataManager />
             </Grid>
-            <Grid size={7}>
+            <Grid size={6}>
               <LabelPreview />
             </Grid>
           </Grid>

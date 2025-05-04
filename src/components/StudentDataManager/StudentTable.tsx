@@ -63,19 +63,6 @@ const StudentTable: React.FC = () => {
         );
         return newRow;
       }}
-      // onCellEditStop={(params, event) => {
-      //   console.log(params);
-      //   console.log(event);
-      //   if (params.colDef.field === 'numCopies') {
-      //     onLoadStudents((priorStudents) =>
-      //       priorStudents.map((student) =>
-      //         student.id === params.value.id
-      //           ? { ...student, numCopies: parseInt(params.value.numCopies) }
-      //           : student
-      //       )
-      //     );
-      //   }
-      // }}
       sx={{ width: '100%', maxHeight: '80vh' }}
     />
   );
