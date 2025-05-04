@@ -28,6 +28,8 @@ export const StudentsProvider: React.FC<{ children: React.ReactNode }> = ({
     []
   );
 
+  const [gap, setGap] = React.useState(0);
+
   return (
     <StudentContext.Provider
       value={{
@@ -37,6 +39,8 @@ export const StudentsProvider: React.FC<{ children: React.ReactNode }> = ({
         onUpdateStudents,
         selectedStudentIds: selectedIds,
         onChangeSelectedStudentIds: setSelectedIds,
+        gap,
+        setGap,
       }}
     >
       {children}

@@ -1,11 +1,16 @@
 import { DataGrid, GridColDef, GridRowSelectionModel } from '@mui/x-data-grid';
 import React from 'react';
+import { useSearchParams } from 'react-router';
 import { useStudents } from '../../hooks/useStudents';
 import { Student } from '../../types/Student';
 
 const StudentTable: React.FC = () => {
-  const { students, onUpdateStudents, onChangeSelectedStudentIds } =
-    useStudents();
+  const {
+    students,
+    selectedStudentIds,
+    onUpdateStudents,
+    onChangeSelectedStudentIds,
+  } = useStudents();
 
   const columns: GridColDef[] = [
     {
@@ -44,11 +49,33 @@ const StudentTable: React.FC = () => {
     },
   ];
 
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Sync URL → state
+  React.useEffect(() => {
+    const urlValue = searchParams.get('ids') || '';
+    onChangeSelectedStudentIds(urlValue ? JSON.parse(urlValue) : []);
+  }, [searchParams]);
+
+  // Sync state → URL
+  React.useEffect(() => {
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      if (selectedStudentIds.length) {
+        newParams.set('ids', JSON.stringify(selectedStudentIds));
+      } else {
+        newParams.delete('ids');
+      }
+      return newParams;
+    });
+  }, [selectedStudentIds]);
+
   return (
     <DataGrid
       rows={students}
       columns={columns}
       checkboxSelection
+      keepNonExistentRowsSelected
       disableRowSelectionOnClick
       onRowSelectionModelChange={(selection: GridRowSelectionModel) =>
         onChangeSelectedStudentIds([...selection.ids].map((id) => `${id}`))

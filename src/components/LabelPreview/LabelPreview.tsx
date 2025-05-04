@@ -11,6 +11,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import React, { useRef } from 'react';
 import { useStudents } from '../../hooks/useStudents';
+import { Student } from '../../types/Student';
 import { PaperRenderer } from './PaperRenderer';
 
 const repeat = <T,>(val: T, times: number): T[] => {
@@ -40,11 +41,14 @@ const LabelPreview: React.FC = () => {
     pdf.save('labels.pdf');
   };
 
-  const { students, selectedStudentIds } = useStudents();
+  const { students, selectedStudentIds, gap } = useStudents();
 
-  const selectedStudents = students
-    .filter((student) => selectedStudentIds.includes(student.id))
-    .flatMap((student) => repeat(student, student.numCopies));
+  const selectedStudents: Array<Student | null> = [
+    ...repeat(null, gap),
+    ...students
+      .filter((student) => selectedStudentIds.includes(student.id))
+      .flatMap((student) => repeat(student, student.numCopies)),
+  ];
 
   const totalPages = Math.ceil(selectedStudents.length / PAGE_SIZE);
 
@@ -73,19 +77,21 @@ const LabelPreview: React.FC = () => {
                       width: '19.14vh',
                     }}
                   >
-                    <Typography
-                      variant="body1"
-                      fontWeight={'bold'}
-                      fontSize={`1.7vh`}
-                      lineHeight={`2.0vh`}
-                      sx={{ fontFamily: ['Bubblegum Sans'] }}
-                    >
-                      {student.first}
-                      <br />
-                      {student.homeroom}
-                      <br />
-                      {student.grade}
-                    </Typography>
+                    {student ? (
+                      <Typography
+                        variant="body1"
+                        fontWeight={'bold'}
+                        fontSize={`1.7vh`}
+                        lineHeight={`2.0vh`}
+                        sx={{ fontFamily: ['Bubblegum Sans'] }}
+                      >
+                        {student.first}
+                        <br />
+                        {student.homeroom}
+                        <br />
+                        {student.grade}
+                      </Typography>
+                    ) : null}
                   </Paper>
                 </Grid>
               ))}

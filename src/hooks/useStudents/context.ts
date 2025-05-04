@@ -15,6 +15,9 @@ export const StudentContext = React.createContext<{
 
   selectedStudentIds: string[];
   onChangeSelectedStudentIds: (ids: string[]) => void;
+
+  gap: number;
+  setGap: (gap: number) => void;
 }>({
   students: [],
   loadedFromCache: false,
@@ -23,4 +26,6 @@ export const StudentContext = React.createContext<{
 
   selectedStudentIds: [],
   onChangeSelectedStudentIds: nullFunc,
+  gap: 0,
+  setGap: nullFunc,
 });
