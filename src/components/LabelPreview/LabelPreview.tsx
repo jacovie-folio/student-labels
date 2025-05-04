@@ -21,7 +21,7 @@ const repeat = <T,>(val: T, times: number): T[] => {
   return arr;
 };
 
-const PAGE_SIZE = 27;
+const PAGE_SIZE = 30;
 
 const LabelPreview: React.FC = () => {
   const printRef = useRef<HTMLDivElement>(null);
@@ -30,7 +30,7 @@ const LabelPreview: React.FC = () => {
     const element = printRef.current;
     if (!element) return;
 
-    const canvas = await html2canvas(element);
+    const canvas = await html2canvas(element, { scale: 3 });
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF();
     const imgProps = pdf.getImageProperties(imgData);
@@ -54,7 +54,12 @@ const LabelPreview: React.FC = () => {
     <Stack spacing={2} sx={{ maxHeight: '95vh' }}>
       <Box flexGrow={1} maxHeight={'80vh'} display={'block'}>
         <PaperRenderer ref={printRef} aspectRatio={[8.5, 11]}>
-          <Grid container spacing={'0.89vh'} sx={{ py: '3.75vh', px: `1.3vh` }}>
+          <Grid
+            container
+            columnSpacing={'0.89vh'}
+            rowGap={'0.04vh'}
+            sx={{ py: '3.75vh', px: `1.3vh` }}
+          >
             {selectedStudents
               .slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
               .map((student, i) => (
