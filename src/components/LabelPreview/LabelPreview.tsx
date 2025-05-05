@@ -31,9 +31,11 @@ const LabelPreview: React.FC = () => {
     const element = printRef.current;
     if (!element) return;
 
-    const canvas = await html2canvas(element, { scale: 3 });
+    const canvas = await html2canvas(element, {
+      scale: 3,
+    });
     const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF();
+    const pdf = new jsPDF({ unit: 'in', format: [8.5, 11] });
     const imgProps = pdf.getImageProperties(imgData);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
